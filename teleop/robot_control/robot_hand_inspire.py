@@ -23,9 +23,8 @@ kTopicInspireState = "rt/inspire/state"
 class InspireController:
     def __init__(self, left_hand_array, right_hand_array, 
                  inspire_hand_data_lock = None, inspire_hand_state_out = None, 
-                 inspire_hand_action_out = None, 
-                 filter = True, fps = 200.0):
-        print("Initialize InspireController2")
+                 inspire_hand_action_out = None, fps = 200.0):
+        print("Initialize InspireController")
         self.fps = fps
         self.hand_retargeting = HandRetargeting(HandType.INSPIRE_HAND)
 

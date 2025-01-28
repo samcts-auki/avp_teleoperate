@@ -33,6 +33,8 @@ if __name__ == '__main__':
 
     parser.add_argument('--hand', type=str, choices=['dex3', 'gripper', 'inspire1'], help='Select hand controller')
 
+    parser.add_argument('--network-interface', type=str, default=None, help='Select network interface')
+
     args = parser.parse_args()
     print(f"args:{args}\n")
 
@@ -82,10 +84,10 @@ if __name__ == '__main__':
 
     # arm
     if args.arm == 'G1_29':
-        arm_ctrl = G1_29_ArmController()
+        arm_ctrl = G1_29_ArmController(network_interface=args.network_interface)
         arm_ik = G1_29_ArmIK()
     elif args.arm == 'H1_2':
-        arm_ctrl = H1_2_ArmController()
+        arm_ctrl = H1_2_ArmController(network_interface=args.network_interface)
         arm_ik = H1_2_ArmIK()
 
     # hand

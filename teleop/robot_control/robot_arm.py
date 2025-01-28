@@ -40,7 +40,7 @@ class DataBuffer:
             self.data = data
 
 class G1_29_ArmController:
-    def __init__(self):
+    def __init__(self, network_interface=None):
         print("Initialize G1_29_ArmController...")
         self.q_target = np.zeros(14)
         self.tauff_target = np.zeros(14)
@@ -61,7 +61,10 @@ class G1_29_ArmController:
         self._gradual_time = None
 
         # initialize lowcmd publisher and lowstate subscriber
-        ChannelFactoryInitialize(0)
+        if network_interface:
+            ChannelFactoryInitialize(0, network_interface)
+        else:
+            ChannelFactoryInitialize(0)
         self.lowcmd_publisher = ChannelPublisher(kTopicLowCommand, LowCmd_)
         self.lowcmd_publisher.Init()
         self.lowstate_subscriber = ChannelSubscriber(kTopicLowState, LowState_)
@@ -304,7 +307,7 @@ class G1_29_JointIndex(IntEnum):
     kNotUsedJoint5 = 34
 
 class H1_2_ArmController:
-    def __init__(self):
+    def __init__(self, network_interface=None):
         print("Initialize H1_2_ArmController...")
         self.q_target = np.zeros(14)
         self.tauff_target = np.zeros(14)
@@ -325,7 +328,10 @@ class H1_2_ArmController:
         self._gradual_time = None
 
         # initialize lowcmd publisher and lowstate subscriber
-        ChannelFactoryInitialize(0)
+        if network_interface:
+            ChannelFactoryInitialize(0, network_interface)
+        else:
+            ChannelFactoryInitialize(0)
         self.lowcmd_publisher = ChannelPublisher(kTopicLowCommand, LowCmd_)
         self.lowcmd_publisher.Init()
         self.lowstate_subscriber = ChannelSubscriber(kTopicLowState, LowState_)
