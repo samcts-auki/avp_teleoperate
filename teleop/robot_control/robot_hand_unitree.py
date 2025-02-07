@@ -31,7 +31,7 @@ kTopicDex3RightState = "rt/dex3/right/state"
 
 class Dex3_1_Controller:
     def __init__(self, left_hand_array, right_hand_array, dual_hand_data_lock = None, dual_hand_state_array = None,
-                       dual_hand_action_array = None, fps = 100.0, Unit_Test = False):
+                       dual_hand_action_array = None, fps = 100.0, Unit_Test = False, network_interface = None):
         """
         [note] A *_array type parameter requires using a multiprocessing Array, because it needs to be passed to the internal child process
 
@@ -57,7 +57,10 @@ class Dex3_1_Controller:
             self.hand_retargeting = HandRetargeting(HandType.UNITREE_DEX3)
         else:
             self.hand_retargeting = HandRetargeting(HandType.UNITREE_DEX3_Unit_Test)
-            ChannelFactoryInitialize(0)
+            if network_interface:
+                ChannelFactoryInitialize(0, network_interface)
+            else:
+                ChannelFactoryInitialize(0)
 
         # initialize handcmd publisher and handstate subscriber
         self.LeftHandCmb_publisher = ChannelPublisher(kTopicDex3LeftCommand, HandCmd_)
@@ -229,7 +232,7 @@ kTopicGripperState = "rt/unitree_actuator/state"
 
 class Gripper_Controller:
     def __init__(self, left_hand_array, right_hand_array, dual_gripper_data_lock = None, dual_gripper_state_out = None, dual_gripper_action_out = None, 
-                       filter = True, fps = 200.0, Unit_Test = False):
+                       filter = True, fps = 200.0, Unit_Test = False, network_interface = None):
         """
         [note] A *_array type parameter requires using a multiprocessing Array, because it needs to be passed to the internal child process
 
@@ -258,7 +261,10 @@ class Gripper_Controller:
             self.smooth_filter = None
 
         if self.Unit_Test:
-            ChannelFactoryInitialize(0)
+            if network_interface:
+                ChannelFactoryInitialize(0, network_interface)
+            else:
+                ChannelFactoryInitialize(0)
  
         # initialize handcmd publisher and handstate subscriber
         self.GripperCmb_publisher = ChannelPublisher(kTopicGripperCommand, MotorCmds_)
