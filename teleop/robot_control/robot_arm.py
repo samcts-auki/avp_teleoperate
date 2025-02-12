@@ -8,7 +8,7 @@ from unitree_sdk2py.idl.unitree_hg.msg.dds_ import LowCmd_, LowState_           
 from unitree_sdk2py.idl.default import unitree_hg_msg_dds__LowCmd_
 from unitree_sdk2py.utils.crc import CRC
 
-kTopicLowCommand = "rt/lowcmd"
+kTopicLowCommand = "rt/arm_sdk"
 kTopicLowState = "rt/lowstate"
 G1_29_Num_Motors = 35
 H1_2_Num_Motors = 35
@@ -93,24 +93,15 @@ class G1_29_ArmController:
 
         arm_indices = set(member.value for member in G1_29_JointArmIndex)
         for id in G1_29_JointIndex:
-            self.msg.motor_cmd[id].mode = 1
             if id.value in arm_indices:
-                if self._Is_wrist_motor(id):
-                    self.msg.motor_cmd[id].kp = self.kp_wrist
-                    self.msg.motor_cmd[id].kd = self.kd_wrist
-                else:
-                    self.msg.motor_cmd[id].kp = self.kp_low
-                    self.msg.motor_cmd[id].kd = self.kd_low
-            else:
-                if self._Is_weak_motor(id):
-                    self.msg.motor_cmd[id].kp = self.kp_low
-                    self.msg.motor_cmd[id].kd = self.kd_low
-                else:
-                    self.msg.motor_cmd[id].kp = self.kp_high
-                    self.msg.motor_cmd[id].kd = self.kd_high
+                self.msg.motor_cmd[id].kp = 60.0
+                self.msg.motor_cmd[id].kd = 1.5
             self.msg.motor_cmd[id].q  = self.all_motor_q[id]
         print("Lock OK!\n")
 
+        # Set weight back to 1.0
+        self.msg.motor_cmd[G1_29_JointIndex.kNotUsedJoint0].q = 1.0
+        
         # initialize publish thread
         self.publish_thread = threading.Thread(target=self._ctrl_motor_state)
         self.ctrl_lock = threading.Lock()
