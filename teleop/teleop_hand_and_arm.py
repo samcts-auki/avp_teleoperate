@@ -17,7 +17,6 @@ from teleop.robot_control.robot_arm_ik import G1_29_ArmIK, H1_2_ArmIK
 from teleop.robot_control.robot_hand_unitree import Dex3_1_Controller, Gripper_Controller
 from teleop.robot_control.robot_hand_inspire import InspireController
 from teleop.image_server.image_client import ImageClient
-from teleop.utils.episode_writer import EpisodeWriter
 
 
 if __name__ == '__main__':
@@ -71,9 +70,9 @@ if __name__ == '__main__':
         wrist_img_shm = shared_memory.SharedMemory(create = True, size = np.prod(wrist_img_shape) * np.uint8().itemsize)
         wrist_img_array = np.ndarray(wrist_img_shape, dtype = np.uint8, buffer = wrist_img_shm.buf)
         img_client = ImageClient(tv_img_shape = tv_img_shape, tv_img_shm_name = tv_img_shm.name, 
-                                 wrist_img_shape = wrist_img_shape, wrist_img_shm_name = wrist_img_shm.name)
+                                 wrist_img_shape = wrist_img_shape, wrist_img_shm_name = wrist_img_shm.name, image_show=False)
     else:
-        img_client = ImageClient(tv_img_shape = tv_img_shape, tv_img_shm_name = tv_img_shm.name)
+        img_client = ImageClient(tv_img_shape = tv_img_shape, tv_img_shm_name = tv_img_shm.name, image_show=False)
 
     image_receive_thread = threading.Thread(target = img_client.receive_process, daemon = True)
     image_receive_thread.daemon = True
@@ -116,9 +115,9 @@ if __name__ == '__main__':
     else:
         pass
     
-    if args.record:
-        recorder = EpisodeWriter(task_dir = args.task_dir, frequency = args.frequency, rerun_log = True)
-        recording = False
+    # if args.record:
+    #     recorder = EpisodeWriter(task_dir = args.task_dir, frequency = args.frequency, rerun_log = True)
+    #     recording = False
         
     try:
         user_input = input("Please enter the start signal (enter 'r' to start the subsequent program):\n")
@@ -141,23 +140,25 @@ if __name__ == '__main__':
 
                 # solve ik using motor data and wrist pose, then use ik results to control arms.
                 time_ik_start = time.time()
+                print("solve ik")
                 sol_q, sol_tauff  = arm_ik.solve_ik(left_wrist, right_wrist, current_lr_arm_q, current_lr_arm_dq)
+                print("solved ik")
                 time_ik_end = time.time()
-                # print(f"ik:\t{round(time_ik_end - time_ik_start, 6)}")
+                print(f"ik:\t{round(time_ik_end - time_ik_start, 6)}")
                 arm_ctrl.ctrl_dual_arm(sol_q, sol_tauff)
 
-                tv_resized_image = cv2.resize(tv_img_array, (tv_img_shape[1] // 2, tv_img_shape[0] // 2))
-                cv2.imshow("record image", tv_resized_image)
-                key = cv2.waitKey(1) & 0xFF
-                if key == ord('q'):
-                    running = False
-                elif key == ord('s') and args.record:
-                    recording = not recording # state flipping
-                    if recording:
-                        if not recorder.create_episode():
-                            recording = False
-                    else:
-                        recorder.save_episode()
+                # tv_resized_image = cv2.resize(tv_img_array, (tv_img_shape[1] // 2, tv_img_shape[0] // 2))
+                # cv2.imshow("record image", tv_resized_image)
+                # key = cv2.waitKey(1) & 0xFF
+                # if key == ord('q'):
+                #     running = False
+                # elif key == ord('s') and args.record:
+                #     recording = not recording # state flipping
+                #     if recording:
+                #         if not recorder.create_episode():
+                #             recording = False
+                #     else:
+                #         recorder.save_episode()
 
                 # record data
                 if args.record:
