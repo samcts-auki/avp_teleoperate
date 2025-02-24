@@ -140,11 +140,9 @@ if __name__ == '__main__':
 
                 # solve ik using motor data and wrist pose, then use ik results to control arms.
                 time_ik_start = time.time()
-                print("solve ik")
                 sol_q, sol_tauff  = arm_ik.solve_ik(left_wrist, right_wrist, current_lr_arm_q, current_lr_arm_dq)
-                print("solved ik")
                 time_ik_end = time.time()
-                print(f"ik:\t{round(time_ik_end - time_ik_start, 6)}")
+                # print(f"ik:\t{round(time_ik_end - time_ik_start, 6)}")
                 arm_ctrl.ctrl_dual_arm(sol_q, sol_tauff)
 
                 # tv_resized_image = cv2.resize(tv_img_array, (tv_img_shape[1] // 2, tv_img_shape[0] // 2))
