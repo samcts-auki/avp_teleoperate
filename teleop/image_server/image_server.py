@@ -26,8 +26,8 @@ class RealSenseCamera(object):
 
         self.pipeline = rs.pipeline()
         config = rs.config()
-        if self.serial_number is not None:
-            config.enable_device(self.serial_number)
+        # if self.serial_number is not None:
+        #     config.enable_device(self.serial_number)
 
         config.enable_stream(rs.stream.color, self.img_shape[1], self.img_shape[0], rs.format.bgr8, self.fps)
 
@@ -158,7 +158,7 @@ class ImageServer:
                 self.head_cameras.append(camera)
         elif self.head_camera_type == 'realsense':
             for serial_number in self.head_camera_id_numbers:
-                camera = RealSenseCamera(img_shape=self.head_image_shape, fps=self.fps, serial_number=serial_number)
+                camera = RealSenseCamera(img_shape=self.head_image_shape, fps=self.fps, serial_number=serial_number, enable_depth=True)
                 self.head_cameras.append(camera)
         else:
             print(f"[Image Server] Unsupported head_camera_type: {self.head_camera_type}")
@@ -307,12 +307,12 @@ class ImageServer:
 if __name__ == "__main__":
     config = {
         'fps': 30,
-        'head_camera_type': 'opencv',
-        'head_camera_image_shape': [480, 1280],  # Head camera resolution
+        'head_camera_type': 'realsense',
+        'head_camera_image_shape': [480, 640],  # Head camera resolution
         'head_camera_id_numbers': [0],
-        'wrist_camera_type': 'opencv',
-        'wrist_camera_image_shape': [480, 640],  # Wrist camera resolution
-        'wrist_camera_id_numbers': [2, 4],
+        # 'wrist_camera_type': 'opencv',
+        # 'wrist_camera_image_shape': [480, 640],  # Wrist camera resolution
+        # 'wrist_camera_id_numbers': [2, 4],
     }
 
     server = ImageServer(config, Unit_Test=False)

@@ -5,7 +5,7 @@ import pinocchio as pin
 import time
 from pinocchio import casadi as cpin                
 from pinocchio.robot_wrapper import RobotWrapper    
-from pinocchio.visualize import MeshcatVisualizer   
+# from pinocchio.visualize import MeshcatVisualizer   
 import os
 import sys
 
@@ -155,41 +155,41 @@ class G1_29_ArmIK:
         self.smooth_filter = WeightedMovingFilter(np.array([0.4, 0.3, 0.2, 0.1]), 14)
         self.vis = None
 
-        if self.Visualization:
-            # Initialize the Meshcat visualizer for visualization
-            self.vis = MeshcatVisualizer(self.reduced_robot.model, self.reduced_robot.collision_model, self.reduced_robot.visual_model)
-            self.vis.initViewer(open=True) 
-            self.vis.loadViewerModel("pinocchio") 
-            self.vis.displayFrames(True, frame_ids=[101, 102], axis_length = 0.15, axis_width = 5)
-            self.vis.display(pin.neutral(self.reduced_robot.model))
+        # if self.Visualization:
+        #     # Initialize the Meshcat visualizer for visualization
+        #     self.vis = MeshcatVisualizer(self.reduced_robot.model, self.reduced_robot.collision_model, self.reduced_robot.visual_model)
+        #     self.vis.initViewer(open=True) 
+        #     self.vis.loadViewerModel("pinocchio") 
+        #     self.vis.displayFrames(True, frame_ids=[101, 102], axis_length = 0.15, axis_width = 5)
+        #     self.vis.display(pin.neutral(self.reduced_robot.model))
 
-            # Enable the display of end effector target frames with short axis lengths and greater width.
-            frame_viz_names = ['L_ee_target', 'R_ee_target']
-            FRAME_AXIS_POSITIONS = (
-                np.array([[0, 0, 0], [1, 0, 0],
-                          [0, 0, 0], [0, 1, 0],
-                          [0, 0, 0], [0, 0, 1]]).astype(np.float32).T
-            )
-            FRAME_AXIS_COLORS = (
-                np.array([[1, 0, 0], [1, 0.6, 0],
-                          [0, 1, 0], [0.6, 1, 0],
-                          [0, 0, 1], [0, 0.6, 1]]).astype(np.float32).T
-            )
-            axis_length = 0.1
-            axis_width = 10
-            for frame_viz_name in frame_viz_names:
-                self.vis.viewer[frame_viz_name].set_object(
-                    mg.LineSegments(
-                        mg.PointsGeometry(
-                            position=axis_length * FRAME_AXIS_POSITIONS,
-                            color=FRAME_AXIS_COLORS,
-                        ),
-                        mg.LineBasicMaterial(
-                            linewidth=axis_width,
-                            vertexColors=True,
-                        ),
-                    )
-                )
+        #     # Enable the display of end effector target frames with short axis lengths and greater width.
+        #     frame_viz_names = ['L_ee_target', 'R_ee_target']
+        #     FRAME_AXIS_POSITIONS = (
+        #         np.array([[0, 0, 0], [1, 0, 0],
+        #                   [0, 0, 0], [0, 1, 0],
+        #                   [0, 0, 0], [0, 0, 1]]).astype(np.float32).T
+        #     )
+        #     FRAME_AXIS_COLORS = (
+        #         np.array([[1, 0, 0], [1, 0.6, 0],
+        #                   [0, 1, 0], [0.6, 1, 0],
+        #                   [0, 0, 1], [0, 0.6, 1]]).astype(np.float32).T
+        #     )
+        #     axis_length = 0.1
+        #     axis_width = 10
+        #     for frame_viz_name in frame_viz_names:
+        #         self.vis.viewer[frame_viz_name].set_object(
+        #             mg.LineSegments(
+        #                 mg.PointsGeometry(
+        #                     position=axis_length * FRAME_AXIS_POSITIONS,
+        #                     color=FRAME_AXIS_COLORS,
+        #                 ),
+        #                 mg.LineBasicMaterial(
+        #                     linewidth=axis_width,
+        #                     vertexColors=True,
+        #                 ),
+        #             )
+        #         )
     # If the robot arm is not the same size as your arm :)
     def scale_arms(self, human_left_pose, human_right_pose, human_arm_length=0.60, robot_arm_length=0.75):
         scale_factor = robot_arm_length / human_arm_length
@@ -405,41 +405,41 @@ class H1_2_ArmIK:
         self.smooth_filter = WeightedMovingFilter(np.array([0.4, 0.3, 0.2, 0.1]), 14)
         self.vis = None
 
-        if self.Visualization:
-            # Initialize the Meshcat visualizer for visualization
-            self.vis = MeshcatVisualizer(self.reduced_robot.model, self.reduced_robot.collision_model, self.reduced_robot.visual_model)
-            self.vis.initViewer(open=True) 
-            self.vis.loadViewerModel("pinocchio") 
-            self.vis.displayFrames(True, frame_ids=[101, 102], axis_length = 0.15, axis_width = 5)
-            self.vis.display(pin.neutral(self.reduced_robot.model))
+        # if self.Visualization:
+        #     # Initialize the Meshcat visualizer for visualization
+        #     self.vis = MeshcatVisualizer(self.reduced_robot.model, self.reduced_robot.collision_model, self.reduced_robot.visual_model)
+        #     self.vis.initViewer(open=True) 
+        #     self.vis.loadViewerModel("pinocchio") 
+        #     self.vis.displayFrames(True, frame_ids=[101, 102], axis_length = 0.15, axis_width = 5)
+        #     self.vis.display(pin.neutral(self.reduced_robot.model))
 
-            # Enable the display of end effector target frames with short axis lengths and greater width.
-            frame_viz_names = ['L_ee_target', 'R_ee_target']
-            FRAME_AXIS_POSITIONS = (
-                np.array([[0, 0, 0], [1, 0, 0],
-                          [0, 0, 0], [0, 1, 0],
-                          [0, 0, 0], [0, 0, 1]]).astype(np.float32).T
-            )
-            FRAME_AXIS_COLORS = (
-                np.array([[1, 0, 0], [1, 0.6, 0],
-                          [0, 1, 0], [0.6, 1, 0],
-                          [0, 0, 1], [0, 0.6, 1]]).astype(np.float32).T
-            )
-            axis_length = 0.1
-            axis_width = 10
-            for frame_viz_name in frame_viz_names:
-                self.vis.viewer[frame_viz_name].set_object(
-                    mg.LineSegments(
-                        mg.PointsGeometry(
-                            position=axis_length * FRAME_AXIS_POSITIONS,
-                            color=FRAME_AXIS_COLORS,
-                        ),
-                        mg.LineBasicMaterial(
-                            linewidth=axis_width,
-                            vertexColors=True,
-                        ),
-                    )
-                )
+        #     # Enable the display of end effector target frames with short axis lengths and greater width.
+        #     frame_viz_names = ['L_ee_target', 'R_ee_target']
+        #     FRAME_AXIS_POSITIONS = (
+        #         np.array([[0, 0, 0], [1, 0, 0],
+        #                   [0, 0, 0], [0, 1, 0],
+        #                   [0, 0, 0], [0, 0, 1]]).astype(np.float32).T
+        #     )
+        #     FRAME_AXIS_COLORS = (
+        #         np.array([[1, 0, 0], [1, 0.6, 0],
+        #                   [0, 1, 0], [0.6, 1, 0],
+        #                   [0, 0, 1], [0, 0.6, 1]]).astype(np.float32).T
+        #     )
+        #     axis_length = 0.1
+        #     axis_width = 10
+        #     for frame_viz_name in frame_viz_names:
+        #         self.vis.viewer[frame_viz_name].set_object(
+        #             mg.LineSegments(
+        #                 mg.PointsGeometry(
+        #                     position=axis_length * FRAME_AXIS_POSITIONS,
+        #                     color=FRAME_AXIS_COLORS,
+        #                 ),
+        #                 mg.LineBasicMaterial(
+        #                     linewidth=axis_width,
+        #                     vertexColors=True,
+        #                 ),
+        #             )
+        #         )
     # If the robot arm is not the same size as your arm :)
     def scale_arms(self, human_left_pose, human_right_pose, human_arm_length=0.60, robot_arm_length=0.75):
         scale_factor = robot_arm_length / human_arm_length
