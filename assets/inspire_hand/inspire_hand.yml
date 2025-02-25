@@ -16,6 +16,8 @@ left:
   # A smaller alpha means stronger filtering, i.e. more smooth but also larger latency
   low_pass_alpha: 0.8
 
+  ignore_mimic_joint: true
+
 right:
   type: vector
   urdf_path: inspire_hand/inspire_hand_right.urdf
@@ -33,3 +35,5 @@ right:
 
   # A smaller alpha means stronger filtering, i.e. more smooth but also larger latency
   low_pass_alpha: 0.8
+
+  ignore_mimic_joint: true
