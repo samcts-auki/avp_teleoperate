@@ -102,16 +102,19 @@ class InspireController:
                         ref_left_value = left_hand_mat[inspire_tip_indices]
                         ref_right_value = right_hand_mat[inspire_tip_indices]
 
-                        left_qpos  = self.hand_retargeting.left_retargeting.retarget(ref_left_value)[[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]]
-                        left_q_target = [1.7- left_qpos[i] for i in  [4, 6, 2, 0]]
-                        left_q_target.append(1.2 - left_qpos[8])
-                        left_q_target.append(0.5 - left_qpos[9])
+                        left_q_target  = self.hand_retargeting.left_retargeting.retarget(ref_left_value)[self.hand_retargeting.right_dex_retargeting_to_hardware]
+                        right_q_target = self.hand_retargeting.right_retargeting.retarget(ref_right_value)[self.hand_retargeting.right_dex_retargeting_to_hardware]
+                        for i in range(len(left_q_target)):
+                            if i < 4:
+                                left_q_target[i] = 1.7 - left_q_target[i]
+                                right_q_target[i] = 1.7 - right_q_target[i]
+                            elif i == 4:
+                                left_q_target[i] = 1.2 - left_q_target[i]
+                                right_q_target[i] = 1.2 - right_q_target[i]
+                            else:
+                                left_q_target[i] = 0.5 - left_q_target[i]
+                                right_q_target[i] = 0.5 - right_q_target[i]
 
-                        right_qpos = self.hand_retargeting.right_retargeting.retarget(ref_right_value)[[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]]
-                        right_q_target = [1.7 - right_qpos[i] for i in [4, 6, 2, 0]]
-                        right_q_target.append(1.2 - right_qpos[8])
-                        right_q_target.append(0.5 - right_qpos[9])
-                        
                     # get dual hand action
                     action_data = np.concatenate((right_q_target, left_q_target))    
                     if inspire_hand_state_out and inspire_hand_action_out:
