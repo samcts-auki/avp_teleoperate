@@ -96,6 +96,9 @@ class G1_29_ArmController:
             if id.value in arm_indices:
                 self.msg.motor_cmd[id].kp = 60.0
                 self.msg.motor_cmd[id].kd = 1.5
+            if id.value == G1_29_JointIndex.kWaistYaw:
+                self.msg.motor_cmd[id].kp = self.kp_high
+                self.msg.motor_cmd[id].kd = self.kd_high
             self.msg.motor_cmd[id].q  = self.all_motor_q[id]
         print("Lock OK!\n")
 
