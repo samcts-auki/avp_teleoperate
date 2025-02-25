@@ -2,7 +2,6 @@ aiohttp==3.9.5
 aiohttp_cors==0.7.0
 aiortc==1.8.0
 av==11.0.0
-dex_retargeting==0.1.1
 einops==0.8.0
 h5py==3.11.0
 ipython==8.12.3
@@ -23,3 +22,6 @@ torch==2.3.0
 torchvision==0.18.0
 vuer==0.0.32rc7
 rerun-sdk==0.20.1
+nlopt>=2.6.1,<2.8.0
+trimesh>=4.4.0
+anytree>=2.12.0
